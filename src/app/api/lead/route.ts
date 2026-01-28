@@ -13,7 +13,7 @@ async function ensureDataDir() {
   try {
     await fs.access(dataDir);
   } catch {
-    await fs.mkdir(dataDir, { recursive: true });
+  await fs.mkdir(dataDir, { recursive: true });
   }
 }
 

@@ -1,37 +1,29 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { StickyCTA } from "@/components/sticky-cta";
-import { siteConfig } from "@/config/site";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.seo.defaultTitle,
-    template: `%s | ${siteConfig.name}`,
+    default: "LocalPulse - AI Appointment Booking & Retention",
+    template: `%s | LocalPulse`,
   },
-  description: siteConfig.seo.defaultDescription,
+  description: "AI-powered appointment booking and customer retention for local service businesses",
   keywords: [
-    "HVAC",
-    "air conditioning",
-    "AC repair",
-    "AC installation",
-    "heating",
-    "Houston",
-    "Texas",
-    "HVAC contractor",
+    "appointment booking",
+    "local business",
+    "customer retention",
+    "AI chatbot",
+    "scheduling software",
   ],
-  authors: [{ name: siteConfig.name }],
+  authors: [{ name: "LocalPulse" }],
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://arcticprohvac.com",
-    siteName: siteConfig.name,
-    title: siteConfig.seo.defaultTitle,
-    description: siteConfig.seo.defaultDescription,
+    siteName: "LocalPulse",
+    title: "LocalPulse - AI Appointment Booking & Retention",
+    description: "AI-powered appointment booking and customer retention for local service businesses",
   },
   robots: {
     index: true,
@@ -47,10 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <StickyCTA />
+        {children}
       </body>
     </html>
   );

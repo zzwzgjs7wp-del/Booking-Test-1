@@ -1,188 +1,357 @@
-# ArcticPro HVAC Website
+# LocalPulse
 
-A production-ready HVAC company website built with Next.js 14, TypeScript, Tailwind CSS, and shadcn/ui.
+AI-powered appointment booking and customer retention platform for local service businesses.
 
 ## Features
 
-- 🚀 **Next.js 14** with App Router
-- 📱 **Mobile-first** responsive design
-- ⚡ **Fast performance** with optimized loading
-- 🎨 **Modern UI** with Tailwind CSS and shadcn/ui
-- 📧 **Contact & Booking Forms** with validation
-- 📧 **Email Integration** via Nodemailer (optional)
-- 🔍 **SEO Optimized** with metadata, JSON-LD, sitemap, and robots.txt
-- 📝 **TypeScript** for type safety
-- 🎯 **Local SEO** ready with structured data
+- 🤖 **AI Booking Assistant** - Natural language chatbot for 24/7 appointment booking
+- 📅 **Smart Scheduling** - Intelligent availability solver with gap-filling heuristics
+- 🔔 **Automated Reminders** - SMS and email reminders to reduce no-shows
+- 📊 **Review Analytics** - AI-powered sentiment analysis and review summaries
+- 🎯 **Churn Prevention** - Identify at-risk customers with actionable suggestions
+- 🏢 **Multi-Tenant** - Manage multiple businesses with role-based access control
+- 💳 **Stripe Integration** - Subscription billing with webhook handling
+- ⚡ **Vercel-Optimized** - Built for serverless with background job processing
 
-## Getting Started
+## Tech Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Supabase (PostgreSQL + Auth + RLS)
+- **Payments**: Stripe
+- **AI**: OpenAI (GPT-4)
+- **Deployment**: Vercel
+
+## Local Setup
 
 ### Prerequisites
 
-- Node.js 18+ and npm/yarn/pnpm
+- Node.js 18+ and npm
+- Supabase account
+- Stripe account
+- OpenAI API key
 
-### Installation
+### 1. Clone and Install
 
-1. **Clone or download the project**
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. **Set up environment variables (optional):**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Edit `.env.local` and add your SMTP credentials if you want email notifications. If not configured, form submissions will still be saved to `data/leads.json`.
-
-4. **Run the development server:**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-5. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## Customization
-
-### Business Information
-
-Edit `src/config/site.ts` to update:
-- Company name
-- Phone number
-- Email address
-- Physical address
-- Service area
-- Business hours
-- Social media links
-- SEO defaults
-
-### Services
-
-Edit `src/config/services.ts` to:
-- Add/remove services
-- Update service descriptions
-- Modify service features and benefits
-
-### Styling
-
-- Colors: Edit `src/app/globals.css` to change the color scheme
-- Components: All components are in `src/components/`
-- Tailwind config: `tailwind.config.ts`
-
-## Project Structure
-
-```
-├── src/
-│   ├── app/              # Next.js App Router pages
-│   │   ├── api/          # API routes
-│   │   ├── services/     # Service pages
-│   │   └── ...
-│   ├── components/       # React components
-│   │   ├── ui/          # shadcn/ui components
-│   │   └── ...
-│   ├── config/          # Configuration files
-│   │   ├── site.ts      # Business info
-│   │   └── services.ts  # Services data
-│   └── lib/            # Utility functions
-├── data/               # Form submissions (created at runtime)
-├── public/            # Static assets
-└── ...
+```bash
+git clone <your-repo>
+cd localpulse
+npm install
 ```
 
-## Form Submissions
+### 2. Set Up Supabase
 
-Form submissions are handled in two ways:
+1. Create a new Supabase project at https://supabase.com
+2. Go to SQL Editor and run the schema:
+   ```bash
+   # Run supabase/schema.sql
+   ```
+3. Run the RLS policies:
+   ```bash
+   # Run supabase/policies.sql
+   ```
+4. (Optional) Seed development data:
+   ```bash
+   # Run supabase/seed.sql
+   ```
 
-1. **File Storage**: All submissions are saved to `data/leads.json` (created automatically)
-2. **Email**: If SMTP is configured, emails are sent to the configured address
+### 3. Configure Environment Variables
 
-### Viewing Submissions
+Copy `.env.example` to `.env.local`:
 
-- Check `data/leads.json` for all form submissions
-- If SMTP is configured, check your email inbox
+```bash
+cp .env.example .env.local
+```
 
-## Deployment
+Fill in your values:
+- `NEXT_PUBLIC_SUPABASE_URL` - From Supabase project settings
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - From Supabase project settings
+- `SUPABASE_SERVICE_ROLE_KEY` - From Supabase project settings (keep secret!)
+- `STRIPE_SECRET_KEY` - From Stripe dashboard
+- `STRIPE_WEBHOOK_SECRET` - From Stripe webhook settings
+- `OPENAI_API_KEY` - From OpenAI platform
 
-### Vercel (Recommended)
+### 4. Set Up Stripe Products
 
-1. **Push your code to GitHub/GitLab/Bitbucket**
+1. Go to Stripe Dashboard > Products
+2. Create products/prices for your subscription tiers:
+   - Starter: $49/month
+   - Professional: $149/month
+   - Enterprise: Custom pricing
+3. Copy the Price ID and set `NEXT_PUBLIC_STRIPE_PRICE_ID` (or use the checkout API with price IDs)
 
-2. **Import to Vercel:**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Import your repository
-   - Vercel will auto-detect Next.js settings
+### 5. Run Development Server
 
-3. **Add Environment Variables:**
-   - In Vercel project settings, add your SMTP variables if needed
-   - Add `NEXT_PUBLIC_SITE_URL` with your production URL
+```bash
+npm run dev
+```
 
-4. **Deploy:**
-   - Click "Deploy"
-   - Your site will be live in minutes!
+Visit http://localhost:3000
 
-### Other Platforms
+## Deployment on Vercel
 
-This Next.js app can be deployed to:
-- **Netlify**: Use Next.js plugin
-- **AWS Amplify**: Connect your Git repository
-- **Railway**: One-click deploy
-- **Self-hosted**: Build with `npm run build` and run with `npm start`
+### 1. Push to GitHub
 
-## Environment Variables
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `SMTP_HOST` | SMTP server hostname | No |
-| `SMTP_PORT` | SMTP server port | No |
-| `SMTP_USER` | SMTP username | No |
-| `SMTP_PASS` | SMTP password | No |
-| `SMTP_FROM` | Email sender address | No |
-| `SMTP_TO` | Email recipient address | No |
-| `NEXT_PUBLIC_SITE_URL` | Production site URL | No |
+### 2. Deploy to Vercel
 
-## SEO Features
+1. Go to https://vercel.com
+2. Import your GitHub repository
+3. Add all environment variables from `.env.local`
+4. Deploy
 
-- ✅ Meta tags on all pages
-- ✅ Open Graph tags
-- ✅ JSON-LD structured data (LocalBusiness schema)
-- ✅ XML sitemap (`/sitemap.xml`)
-- ✅ Robots.txt (`/robots.txt`)
-- ✅ Semantic HTML
-- ✅ Fast loading times
+### 3. Set Up Vercel Cron
 
-## Performance
+The `vercel.json` file includes a cron configuration, but you can also set it up in the Vercel dashboard:
 
-- Optimized images (when added)
-- Code splitting
-- Server-side rendering
-- Static generation where possible
+1. Go to your project settings
+2. Navigate to "Cron Jobs"
+3. Add a new cron job:
+   - **Path**: `/api/jobs/dispatch`
+   - **Schedule**: `*/5 * * * *` (every 5 minutes)
 
-## Browser Support
+Alternatively, use the Vercel CLI:
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+```bash
+vercel cron add "*/5 * * * *" /api/jobs/dispatch
+```
+
+### 4. Configure Stripe Webhook
+
+1. Go to Stripe Dashboard > Webhooks
+2. Add endpoint: `https://your-domain.vercel.app/api/stripe/webhook`
+3. Select events:
+   - `checkout.session.completed`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+4. Copy the webhook signing secret to `STRIPE_WEBHOOK_SECRET`
+
+### 5. Update App URL
+
+Set `NEXT_PUBLIC_APP_URL` to your Vercel deployment URL (e.g., `https://your-app.vercel.app`)
+
+## Architecture
+
+### Multi-Tenancy
+
+- Every tenant-owned table includes `business_id`
+- RLS policies enforce access control using `is_business_member()` helper
+- Business membership required for all tenant data access
+
+### Background Jobs
+
+- Jobs table stores async tasks (reminders, churn snapshots, review summaries)
+- `/api/jobs/dispatch` processes due jobs in batches
+- Vercel Cron triggers dispatch every 5 minutes
+- Jobs retry with exponential backoff (max 5 attempts)
+- Use `enqueueJob()` helper from `@/lib/jobs` to create jobs
+
+**Example:**
+```typescript
+import { enqueueJob } from '@/lib/jobs'
+
+// Schedule a reminder email for tomorrow
+await enqueueJob({
+  businessId: 'your-business-id',
+  type: 'reminders.send',
+  runAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
+  payload: {
+    channel: 'email',
+    to: 'customer@example.com',
+    subject: 'Appointment Reminder',
+    message: 'Your appointment is tomorrow at 2pm',
+    html: '<p>Your appointment is tomorrow at 2pm</p>'
+  }
+})
+```
+
+### API Routes
+
+All routes use Node.js runtime for Stripe/OpenAI/Supabase Service Role access. Edge runtime is not used to maintain compatibility with these services.
+
+### Notifications
+
+Abstracted provider system:
+- Default: Console logging (development)
+- Twilio: SMS support (configure `TWILIO_*` env vars)
+- SendGrid: Email support (configure `SENDGRID_*` env vars)
+
+## How to Sell LocalPulse
+
+### Target Niches
+
+1. **HVAC Companies** - High-value services, seasonal demand, repeat customers
+2. **Plumbing Services** - Emergency bookings, maintenance contracts
+3. **Landscaping** - Seasonal scheduling, recurring services
+4. **Auto Repair** - Appointment-based, customer retention critical
+5. **Beauty Salons** - High appointment volume, customer loyalty programs
+6. **Dental Practices** - Appointment-heavy, recall campaigns
+
+### Pricing Tiers
+
+**Starter ($49/month)**
+- Up to 500 appointments/month
+- Basic features
+- Email support
+
+**Professional ($149/month)**
+- Unlimited appointments
+- All AI features
+- SMS reminders
+- Priority support
+
+**Enterprise (Custom)**
+- Multi-location
+- Custom integrations
+- Dedicated support
+
+### Outreach Scripts
+
+#### Cold Email Template
+
+```
+Subject: Reduce No-Shows and Grow Your [Business Type] Business
+
+Hi [Name],
+
+I noticed [Business Name] offers [service]. Are you struggling with:
+- Last-minute cancellations and no-shows?
+- Time spent on phone calls for bookings?
+- Losing customers to competitors?
+
+LocalPulse helps businesses like yours:
+✓ Reduce no-shows by 40% with automated reminders
+✓ Book appointments 24/7 with AI chatbot
+✓ Identify at-risk customers before they churn
+
+[Business Type] businesses using LocalPulse see an average of:
+- 30% reduction in no-shows
+- 25% increase in repeat bookings
+- 2 hours saved per day on scheduling
+
+Would you be open to a 15-minute demo?
+
+Best,
+[Your Name]
+```
+
+#### LinkedIn Outreach
+
+```
+Hi [Name],
+
+I help [business type] businesses reduce no-shows and increase repeat customers with AI-powered scheduling.
+
+Would you be interested in seeing how [similar business] increased bookings by 25%?
+
+[Link to case study or demo]
+```
+
+#### Follow-Up Sequence
+
+1. **Day 1**: Initial outreach
+2. **Day 3**: Share case study or testimonial
+3. **Day 7**: Offer free trial or demo
+4. **Day 14**: Final follow-up with pricing
+
+### Sales Process
+
+1. **Discovery Call** (15 min)
+   - Understand current booking process
+   - Identify pain points (no-shows, time spent, churn)
+   - Assess volume and needs
+
+2. **Demo** (30 min)
+   - Show AI chatbot booking
+   - Demonstrate smart scheduling
+   - Walk through churn insights
+   - Show review analytics
+
+3. **Trial** (14 days)
+   - Set up business profile
+   - Import existing customers
+   - Configure services and staff
+   - Enable AI chatbot
+
+4. **Onboarding** (1 hour)
+   - Train team on platform
+   - Set up reminders
+   - Configure review ingestion
+   - Enable Stripe subscription
+
+### Key Metrics to Track
+
+- Monthly Recurring Revenue (MRR)
+- Customer Acquisition Cost (CAC)
+- Lifetime Value (LTV)
+- Churn Rate
+- Net Promoter Score (NPS)
+
+## API Documentation
+
+### Core Endpoints
+
+- `GET /api/businesses` - List user's businesses
+- `POST /api/businesses` - Create business
+- `GET /api/services?businessId=...` - List services
+- `POST /api/services?businessId=...` - Create service
+- `GET /api/appointments?businessId=...` - List appointments
+- `POST /api/appointments?businessId=...` - Create appointment
+- `POST /api/chatbot?businessId=...` - AI chatbot interaction
+- `POST /api/reviews/summarize?businessId=...` - Generate review summary
+- `POST /api/churn/run?businessId=...` - Run churn analysis
+
+See route files in `src/app/api/` for full documentation.
+
+## Development
+
+### Project Structure
+
+```
+src/
+├── app/
+│   ├── (app)/          # Authenticated app routes
+│   ├── (marketing)/    # Public marketing pages
+│   ├── api/            # API routes
+│   ├── login/          # Auth pages
+│   └── signup/
+├── components/         # React components
+├── lib/               # Utilities
+│   ├── supabase/      # Supabase clients
+│   ├── business.ts    # Business helpers
+│   ├── availability.ts # Scheduling logic
+│   ├── jobs.ts        # Job queue helpers
+│   └── notifications/ # Notification providers
+└── supabase/          # Database files
+    ├── schema.sql
+    ├── policies.sql
+    └── seed.sql
+```
+
+### Running Tests
+
+```bash
+npm run build  # TypeScript check
+npm run lint   # ESLint check
+```
+
+### Database Migrations
+
+When updating schema:
+1. Update `supabase/schema.sql`
+2. Run in Supabase SQL Editor
+3. Update TypeScript types in `src/lib/supabase/database.types.ts`
 
 ## License
 
-This project is proprietary. All rights reserved.
+MIT
 
 ## Support
 
-For questions or issues, contact: service@arcticprohvac.com
-
----
-
-Built with ❤️ for ArcticPro HVAC
+For issues or questions, please open a GitHub issue or contact support@localpulse.com
