@@ -108,19 +108,21 @@ git push origin main
 
 ### 3. Set Up Vercel Cron
 
-The `vercel.json` file includes a cron configuration, but you can also set it up in the Vercel dashboard:
+The `vercel.json` file includes a cron configuration (Hobby plan compatible - runs once daily). You can also set it up in the Vercel dashboard:
 
 1. Go to your project settings
 2. Navigate to "Cron Jobs"
 3. Add a new cron job:
    - **Path**: `/api/jobs/dispatch`
-   - **Schedule**: `*/5 * * * *` (every 5 minutes)
+   - **Schedule**: `0 9 * * *` (once daily at 9:00 AM UTC)
 
 Alternatively, use the Vercel CLI:
 
 ```bash
-vercel cron add "*/5 * * * *" /api/jobs/dispatch
+vercel cron add "0 9 * * *" /api/jobs/dispatch
 ```
+
+**Note**: The Hobby plan on Vercel limits cron jobs to run once per day maximum. The job dispatcher will process all due jobs in batches when it runs.
 
 ### 4. Configure Stripe Webhook
 
@@ -148,7 +150,7 @@ Set `NEXT_PUBLIC_APP_URL` to your Vercel deployment URL (e.g., `https://your-app
 
 - Jobs table stores async tasks (reminders, churn snapshots, review summaries)
 - `/api/jobs/dispatch` processes due jobs in batches
-- Vercel Cron triggers dispatch every 5 minutes
+- Vercel Cron triggers dispatch once daily at 9:00 AM UTC (Hobby plan compatible)
 - Jobs retry with exponential backoff (max 5 attempts)
 - Use `enqueueJob()` helper from `@/lib/jobs` to create jobs
 
